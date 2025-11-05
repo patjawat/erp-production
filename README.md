@@ -37,6 +37,8 @@ docker exec -it <container_name> bash
 
 # จากนั้นรันคำสั่ง migrate
 yii migrate
+yii update-table
+yii update-table/create-view
 
 # โครงสร้าง Directory
 project-root/
