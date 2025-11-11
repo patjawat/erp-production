@@ -1,6 +1,6 @@
 services:
   mysqlDB:
-    image: ${MUSQL_VERSION}
+    image: ${MYSQL_VERSION}
     container_name: mysqlDB
     networks:
       web-network:
