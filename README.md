@@ -34,7 +34,7 @@ docker ps
 
 ### 4 Migrate Database (สำหรับ Yii2 หรือ Framework อื่น)
 
-docker exec -it <container_name> bash
+docker exec -it erp bash
 
 # จากนั้นรันคำสั่ง migrate
 yii migrate
