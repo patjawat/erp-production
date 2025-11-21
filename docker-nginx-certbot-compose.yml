@@ -2,7 +2,7 @@ services:
   nginx:
     image: nginx:latest
     container_name: nginx
-    restart: unless-stopped
+    restart: always
     ports:
       - "80:80"
       - "443:443"
@@ -13,45 +13,52 @@ services:
       - ./certbot/conf:/etc/letsencrypt
     depends_on:
       - erp
+    networks:
+      - web-network
 
   erp:
     image: patjawat/erp:latest
     container_name: erp
-    restart: unless-stopped
-    expose:
-      - "80"
-    depends_on:
-      - mysqlDB
+    restart: always
+    networks:
+      - web-network
 
   mysqlDB:
     image: mysql:8.0
     container_name: mysqlDB
-    restart: unless-stopped
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: yourpassword
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: erp
+      MYSQL_USER: erpuser
+      MYSQL_PASSWORD: erppass
     volumes:
-      - ./mysql/data:/var/lib/mysql
+      - dbdata:/var/lib/mysql
+    networks:
+      - web-network
 
-  phpmyadmin_pma:
+  phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmin_pma
-    restart: unless-stopped
+    restart: always
     ports:
       - "8000:80"
     environment:
       PMA_HOST: mysqlDB
-      PMA_USER: root
-      PMA_PASSWORD: yourpassword
+    networks:
+      - web-network
 
   certbot:
     image: certbot/certbot
     container_name: certbot
-    entrypoint: /bin/sh
     volumes:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
+    entrypoint: >
+      sh -c "echo 'Certbot container ready'"
+
+volumes:
+  dbdata:
 
 networks:
-  default:
   web-network:
