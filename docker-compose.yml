@@ -43,7 +43,7 @@ services:
     container_name: ${CONTAINER_NAME}
     platform: linux/amd64
     volumes:
-      - ./app-erp/fileupload:/app/modules/filemanager/fileupload
+      - ./app-erp/fileupload:/app/modules/filemanager/fileupload:Z
       - ./app-erp/doc_receive:/app/doc_receive
     env_file:
       - .env
